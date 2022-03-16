@@ -44,8 +44,27 @@ void sortFScore(DynamicArray<NodeGraph::Node*>& nodes)
 
 DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 {
+	//https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Algorithm
+	DynamicArray<NodeGraph::Node*> currentArray;
+	Node* m_currentNode = start;
+	for (int n ; n = currentArray.getLength(); n++)
+	{
+		//gets the sorce of the start
+		start->gScore;
+		//gets the previous
+		start->previous->gScore;
+		//adds the value to the array
+	}
+	while (true)
+	{
+
+	}
+	for (size_t i = 0; i < length; i++)
+	{
+
+	}
 	//Insert algorithm here
-	
+	return;
 }
 
 void NodeGraph::drawGraph(Node* start)
