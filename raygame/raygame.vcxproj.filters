@@ -119,6 +119,9 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\other</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerMoveComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StateMachineComponent.h">
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="Transform2D.h">
       <Filter>Header Files\other</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMoveComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
