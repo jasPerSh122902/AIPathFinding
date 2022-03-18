@@ -44,30 +44,45 @@ void sortFScore(DynamicArray<NodeGraph::Node*>& nodes)
 
 DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 {
-	DynamicArray<NodeGraph::Node*> openList;
-	DynamicArray<NodeGraph::Node*> closedList;
-	Node* m_currentNode = start;
-	for (int n = 0 ; n = openList.getLength(); n++)
-	{
-		openList[n];
-		openList[n]->previous;
-		//gets the sorce of the start
-		start->gScore;
-		//gets the previous
-		start->previous->gScore;
-		//adds the value to the array
-		for (int i = 0; i < closedList.getLength(); i++)
-		{
+	//initialization
+	DynamicArray<NodeGraph::Node*> openList, closedList = DynamicArray<NodeGraph::Node*>();
 
+	openList.addItem(start);
+	//has to check to see if the openlist is empty
+	while (openList.getLength() != 0)
+	{
+
+		NodeGraph::Node* key = nullptr;
+		int j = 0;
+
+		for (int i = 1; i < nodes.getLength(); i++) {
+			key = nodes[i];
+			j = i - 1;
+			while (j >= 0 && nodes[j]->gScore > key->gScore) {
+				nodes[j + 1] = nodes[j];
+				j--;
+			}
+
+			nodes[j + 1] = key;
 		}
-	}
-	while (true)
-	{
+		NodeGraph::Node* m_currentNode = openList[0];
+		for (int n = 0; n < openList[0]->edges.getLength(); n++)
+		{
+			NodeGraph::Node* targetNode = openList[0]->edges[n].target;
 
+			if (!closedList.contains(targetNode) && !openList.contains(targetNode))
+			{
+				//gets the sorce of the start
+				targetNode->gScore = openList[0]->gScore + openList[0]->edges[n].cost;
+				targetNode->previous = openList[0];
+				openList.addItem(targetNode);
+			}
+		}
+		closedList.addItem(openList[0]);
+		openList.remove(openList[0]);
 	}
-	
-	//Insert algorithm here
-	return;
+
+	return reconstructPath(start, goal);
 }
 
 void NodeGraph::drawGraph(Node* start)
