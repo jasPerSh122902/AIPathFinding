@@ -81,10 +81,10 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 			//tries to see if the two list contains the target node
 			if (!closedList.contains(targetNode) && !openList.contains(targetNode))
 			{
-				//gets the sorce of the start
+				//makes the gscore of the targetnode equal to the openlist index 0 gscorce + the edges index N of the openlist index 0 at  cost
 				targetNode->gScore = openList[0]->gScore + openList[0]->edges[n].cost;
-				targetNode->previous = openList[0];
-				openList.addItem(targetNode);
+				targetNode->previous = openList[0];//set targetnodes previous to the openlist index 0
+				openList.addItem(targetNode);//adds the targetnode to the openlist
 			}
 		}
 		closedList.addItem(openList[0]);
