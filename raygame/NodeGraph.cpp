@@ -10,6 +10,7 @@ DynamicArray<NodeGraph::Node*> reconstructPath(NodeGraph::Node* start, NodeGraph
 	while (currentNode != start->previous)
 	{
 		currentNode->color = 0xFFFF00FF;
+		start->color = 0x00FFFFFF;
 		path.insert(currentNode, 0);
 		currentNode = currentNode->previous;
 	}
@@ -24,7 +25,10 @@ float diagonalDistance(NodeGraph::Node* node, NodeGraph::Node* goal, float cardi
 
 	return cardinalCost * (displacementX + displacementY) + (diagonalCost - 2 * cardinalCost) * fmin(displacementX, displacementY);
 }
-
+/// <summary>
+/// sorts the nodes by the F score
+/// </summary>
+/// <param name="nodes">is the name for a list</param>
 void sortFScore(DynamicArray<NodeGraph::Node*>& nodes)
 {
 	NodeGraph::Node* key = nullptr;
@@ -41,7 +45,10 @@ void sortFScore(DynamicArray<NodeGraph::Node*>& nodes)
 		nodes[j + 1] = key;
 	}
 }
-
+/// <summary>
+/// sorts the nodes by the g score
+/// </summary>
+/// <param name="nodes">is the name for a list</param>
 void sortGScore(DynamicArray<NodeGraph::Node*>& nodes)
 {
 	NodeGraph::Node* key = nullptr;
@@ -59,10 +66,20 @@ void sortGScore(DynamicArray<NodeGraph::Node*>& nodes)
 	}
 }
 
-
+/// <summary>
+/// finds the closes path to the player (this looks mostly like a state line).
+/// </summary>
+/// <param name="start">The begining node and the start of the path</param>
+/// <param name="goal">the end of the path</param>
+/// <returns> reconstructPath(start, goal) this function is to make the path</returns>
 DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 {
-	//initialization
+	//makes all of the graph scores go back to zero
+	resetGraphScore(start);
+	
+	///initialization two dynamic Arrays for holding
+	/// <param name="openList">This array or list is the first thing that is checked. Holds nodes that have not been touched</param>
+	/// <param name="closedList">Holds the nodes that have been touched so to preven overlaping</param>
 	DynamicArray<NodeGraph::Node*> openList, closedList = DynamicArray<NodeGraph::Node*>();
 
 	openList.addItem(start);
@@ -90,7 +107,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 		closedList.addItem(openList[0]);
 		openList.remove(openList[0]);
 		//returns if the currentnode is the goal
-		if(m_currentNode == goal)
+		if (m_currentNode == goal)
 			return reconstructPath(start, goal);
 	}
 }

@@ -120,7 +120,7 @@
       <Filter>Source Files\other</Filter>
     </ClCompile>
     <ClCompile Include="PlayerMoveComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
