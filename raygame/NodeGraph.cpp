@@ -85,7 +85,6 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	//has to check to see if the openlist is empty
 	while (openList.getLength() != 0)
 	{
-		
 		//sorts the openlist by there g score
 		sortGScore(openList);
 		//makes the currentnode to the openlist at the index 0
@@ -93,25 +92,37 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 		//if the currentnode is not walkable
 		if (m_currentNode->walkable == false)
 			return DynamicArray<NodeGraph::Node*>();//dont move
+
+		closedList.addItem(m_currentNode);
+		openList.remove(m_currentNode);
+		//returns if the currentnode is the goal
+		if (m_currentNode == goal)
+			return reconstructPath(start, goal);
 		//gos through the openlists edges 
 		for (int n = 0; n < m_currentNode->edges.getLength(); n++)
 		{
 			//target node is the opelist edges target
 			NodeGraph::Node* targetNode = m_currentNode->edges[n].target;
 			//tries to see if the two list contains the target node
-			if (!closedList.contains(targetNode) && !openList.contains(targetNode))
+			if (!closedList.contains(targetNode))
 			{
 				//makes the gscore of the targetnode equal to the openlist index 0 gscorce + the edges index N of the openlist index 0 at  cost
 				targetNode->gScore = m_currentNode->gScore + m_currentNode->edges[n].cost;
-				targetNode->previous = m_currentNode;//set targetnodes previous to the openlist index 0
+
+				if(!openList.contains(targetNode))
+					targetNode->previous = m_currentNode;//set targetnodes previous to the openlist index 0
+
+				else {
+					targetNode->gScore = m_currentNode->gScore;//set the target nodes gscore to the crrentnodes gscore
+
+					if (targetNode->gScore > m_currentNode->gScore)//if the target nodes g score is greater than the current nodes gscore
+						targetNode->previous->gScore = m_currentNode->gScore;//set the target nodes previous gscore to the current nodes gscore
+				}
 				openList.addItem(targetNode);//adds the targetnode to the openlist
 			}
+			else 
+				continue;
 		}
-		closedList.addItem(m_currentNode);
-		openList.remove(m_currentNode);
-		//returns if the currentnode is the goal
-		if (m_currentNode == goal)
-			return reconstructPath(start, goal);
 	}
 }
 
