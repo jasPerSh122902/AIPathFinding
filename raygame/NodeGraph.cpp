@@ -9,8 +9,8 @@ DynamicArray<NodeGraph::Node*> reconstructPath(NodeGraph::Node* start, NodeGraph
 
 	while (currentNode != start->previous)
 	{
-		currentNode->color = 0xFFFF00FF;
-		start->color = 0x00FF00FF;
+		currentNode->color = 0x00FF00FF;
+		start->color = 0xF00FFFFF;
 		path.insert(currentNode, 0);
 		currentNode = currentNode->previous;
 	}
@@ -82,6 +82,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	/// <param name="closedList">Holds the nodes that have been touched so to preven overlaping</param>
 	DynamicArray<NodeGraph::Node*> openList, closedList = DynamicArray<NodeGraph::Node*>();
 	openList.addItem(start);
+	
 	//has to check to see if the openlist is empty
 	while (openList.getLength() != 0)
 	{
@@ -89,41 +90,36 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 		sortGScore(openList);
 		//makes the currentnode to the openlist at the index 0
 		NodeGraph::Node* m_currentNode = openList[0];
-		//if the currentnode is not walkable
-		if (m_currentNode->walkable == false)
-			return DynamicArray<NodeGraph::Node*>();//dont move
 
 		closedList.addItem(m_currentNode);
 		openList.remove(m_currentNode);
+
 		//returns if the currentnode is the goal
 		if (m_currentNode == goal)
-			return reconstructPath(start, goal);
+			return reconstructPath(start, m_currentNode);
 		//gos through the openlists edges 
-		for (int n = 0; n < m_currentNode->edges.getLength(); n++)
-		{
-			//target node is the opelist edges target
+		for (int n = 0; n < m_currentNode->edges.getLength(); n++) {
+
 			NodeGraph::Node* targetNode = m_currentNode->edges[n].target;
+			//if the currentnode is not walkable
+			if (m_currentNode->walkable == false)
+				continue;//do not move
 			//tries to see if the two list contains the target node
-			if (!closedList.contains(targetNode))
-			{
+			if (!closedList.contains(targetNode)) {
 				//makes the gscore of the targetnode equal to the openlist index 0 gscorce + the edges index N of the openlist index 0 at  cost
-				targetNode->gScore = m_currentNode->gScore + m_currentNode->edges[n].cost;
-
-				if(!openList.contains(targetNode))
-					targetNode->previous = m_currentNode;//set targetnodes previous to the openlist index 0
-
-				else {
-					targetNode->gScore = m_currentNode->gScore;//set the target nodes gscore to the crrentnodes gscore
-
-					if (targetNode->gScore > m_currentNode->gScore)//if the target nodes g score is greater than the current nodes gscore
-						targetNode->previous->gScore = m_currentNode->gScore;//set the target nodes previous gscore to the current nodes gscore
-				}
-				openList.addItem(targetNode);//adds the targetnode to the openlist
+				targetNode->gScore = m_currentNode->edges[n].cost + m_currentNode->gScore;
 			}
-			else 
-				continue;
+			else continue;
+			//Adds the node to the open list if it is not already in it
+			if (!openList.contains(targetNode)) {
+				openList.addItem(targetNode);//adds the target node to the openlist
+				m_currentNode->edges[n].target->color = 0x00FFFF;//changes color
+				m_currentNode->edges[n].target->gScore = targetNode->gScore;//gets the currentNode edges index Ns target gscore and set it to the targetNode gscore
+				m_currentNode->edges[n].target->previous = m_currentNode; // gets the currentnodes edges targets previous and sets it to the currentNode
+			}
 		}
 	}
+	return reconstructPath(start, goal);
 }
 
 void NodeGraph::drawGraph(Node* start)
