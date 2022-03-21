@@ -71,11 +71,8 @@
     <ClCompile Include="MoveComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Actors</Filter>
-    </ClCompile>
-    <ClCompile Include="Agent.cpp">
-      <Filter>Source Files\Actors</Filter>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
       <Filter>Source Files\Actors</Filter>
@@ -145,8 +142,8 @@
     <ClInclude Include="WanderComponent.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteComponent.h">
-      <Filter>Header Files\Component</Filter>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MoveComponent.h">
       <Filter>Header Files\Component</Filter>
@@ -198,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="PlayerMoveComponent.h">
       <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicArray.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
