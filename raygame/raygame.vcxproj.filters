@@ -197,10 +197,10 @@
       <Filter>Header Files\Component</Filter>
     </ClInclude>
     <ClInclude Include="DynamicArray.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Actors</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -98,28 +98,47 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 		if (m_currentNode == goal)
 			return reconstructPath(start, m_currentNode);
 		//gos through the openlists edges 
-		for (int n = 0; n < m_currentNode->edges.getLength(); n++) {
-
+		for (int n = 0; n < m_currentNode->edges.getLength(); n++) 
+		{
 			NodeGraph::Node* targetNode = m_currentNode->edges[n].target;
 			//if the currentnode is not walkable
 			if (m_currentNode->walkable == false)
 				continue;//do not move
 			//tries to see if the two list contains the target node
-			if (!closedList.contains(targetNode)) {
+			if (!closedList.contains(targetNode))
+			{
 				//makes the gscore of the targetnode equal to the openlist index 0 gscorce + the edges index N of the openlist index 0 at  cost
 				targetNode->gScore = m_currentNode->edges[n].cost + m_currentNode->gScore;
+				targetNode->hScore = manHattan_Distance(m_currentNode, targetNode);
+				targetNode->fScore = targetNode->gScore + targetNode->hScore;
 			}
-			else continue;
+			
+			else 
+				continue;
 			//Adds the node to the open list if it is not already in it
-			if (!openList.contains(targetNode)) {
-				openList.addItem(targetNode);//adds the target node to the openlist
+			if (!openList.contains(targetNode))
+			{
+				//adds the target node to the openlist
+				openList.addItem(targetNode);
 				m_currentNode->edges[n].target->color = 0x00FFFF;//changes color
-				m_currentNode->edges[n].target->gScore = targetNode->gScore;//gets the currentNode edges index Ns target gscore and set it to the targetNode gscore
-				m_currentNode->edges[n].target->previous = m_currentNode; // gets the currentnodes edges targets previous and sets it to the currentNode
+				//gets the currentNode edges index Ns target gscore and set it to the targetNode gscore
+				m_currentNode->edges[n].target->hScore = targetNode->hScore;
+				// gets the currentnodes edges targets previous and sets it to the currentNode
+				m_currentNode->edges[n].target->previous = m_currentNode; 
 			}
 		}
 	}
 	return reconstructPath(start, goal);
+}
+/// <summary>
+/// get the distance for the manHattan by taking in a left and right node
+/// </summary>
+/// <param name="left">The node on the left </param>
+/// <param name="right">the node on the right</param>
+/// <returns> gives a float from the two nodes</returns>
+float NodeGraph::manHattan_Distance(Node* left, Node* right)
+{
+	return abs(right->position.x - left->position.x) + abs(right->position.y - left->position.y);
 }
 
 void NodeGraph::drawGraph(Node* start)

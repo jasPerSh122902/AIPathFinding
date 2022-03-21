@@ -28,6 +28,7 @@ namespace NodeGraph
 	};
 
 	DynamicArray<Node*> findPath(Node* start, Node* end);
+	float manHattan_Distance(Node* left, Node* right);
 
 	void drawGraph(Node* start);
 
