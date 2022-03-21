@@ -197,7 +197,7 @@
       <Filter>Header Files\other</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMoveComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
