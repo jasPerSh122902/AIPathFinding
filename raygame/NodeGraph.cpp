@@ -69,12 +69,16 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	//has to check to see if the openlist is empty
 	while (openList.getLength() != 0)
 	{
+		//sorts the openlist by there g score
 		sortGScore(openList);
+		//makes the currentnode to the openlist at the index 0
 		NodeGraph::Node* m_currentNode = openList[0];
+		//gos through the openlists edges 
 		for (int n = 0; n < openList[0]->edges.getLength(); n++)
 		{
+			//target node is the opelist edges target
 			NodeGraph::Node* targetNode = openList[0]->edges[n].target;
-
+			//tries to see if the two list contains the target node
 			if (!closedList.contains(targetNode) && !openList.contains(targetNode))
 			{
 				//gets the sorce of the start
@@ -85,10 +89,10 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 		}
 		closedList.addItem(openList[0]);
 		openList.remove(openList[0]);
+		//returns if the currentnode is the goal
 		if(m_currentNode == goal)
 			return reconstructPath(start, goal);
 	}
-	
 }
 
 void NodeGraph::drawGraph(Node* start)
