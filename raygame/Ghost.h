@@ -3,6 +3,9 @@
 
 class Maze;
 class PathfindComponent;
+class StateMachineComponent;
+class FleeComponent;
+class SeekComponent;
 
 class Ghost : public Agent
 {
@@ -29,7 +32,10 @@ public:
 	void setTarget(Actor* target);
 
 private:
+	StateMachineComponent* m_stateMachine;
 	PathfindComponent* m_pathfindComponent;
+	FleeComponent* m_fleeComponent;
+	SeekComponent* m_seekComponent;
 	Maze* m_maze;
 
 	Actor* m_target = nullptr;

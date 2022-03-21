@@ -66,7 +66,7 @@ Maze::~Maze()
 void Maze::draw()
 {
 	//allow the user to see the path and the grid 
-	//NodeGraph::drawGraph(m_grid[0][0].node);
+	NodeGraph::drawGraph(m_grid[0][0].node);
 	Scene::draw();
 }
 

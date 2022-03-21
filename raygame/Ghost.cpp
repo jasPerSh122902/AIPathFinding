@@ -4,15 +4,23 @@
 #include "raylib.h"
 #include "Transform2D.h"
 #include "PathfindComponent.h"
+#include "StateMachineComponent.h"
+#include "FleeComponent.h"
+#include "SeekComponent.h"
 #include "MoveComponent.h"
 #include "SpriteComponent.h"
 
 Ghost::Ghost(float x, float y, float maxSpeed, float maxForce, int color, Maze* maze)
 	: Agent(x, y, "Ghost", maxSpeed, maxForce)
 {
+	m_fleeComponent = addComponent<FleeComponent>();
+	m_fleeComponent->setTarget(m_target);
+	m_seekComponent = addComponent<SeekComponent>();
+	m_seekComponent->setTarget(m_target);
 	m_maze = maze;
 	getTransform()->setScale({ Maze::TILE_SIZE,Maze::TILE_SIZE });
-
+	//add the stateMachine
+	m_stateMachine = addComponent<StateMachineComponent>();
 	m_pathfindComponent = new PathfindComponent(maze);
 	m_pathfindComponent->setColor(color);
 	addComponent(m_pathfindComponent);
