@@ -76,53 +76,56 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 {
 	//makes all of the graph scores go back to zero
 	resetGraphScore(start);
-	
+	float gScore = 0;
+	NodeGraph::Node* m_currentNode;
 	///initialization two dynamic Arrays for holding
 	/// <param name="openList">This array or list is the first thing that is checked. Holds nodes that have not been touched</param>
 	/// <param name="closedList">Holds the nodes that have been touched so to preven overlaping</param>
 	DynamicArray<NodeGraph::Node*> openList, closedList = DynamicArray<NodeGraph::Node*>();
 	openList.addItem(start);
-	
+	m_currentNode = start;
 	//has to check to see if the openlist is empty
 	while (openList.getLength() != 0)
 	{
-		//sorts the openlist by there g score
-		sortGScore(openList);
+		//sorts the openlist by there f score
+		sortFScore(openList);
 		//makes the currentnode to the openlist at the index 0
-		NodeGraph::Node* m_currentNode = openList[0];
-
-		closedList.addItem(m_currentNode);
-		openList.remove(m_currentNode);
+		m_currentNode = openList[0];
 
 		//returns if the currentnode is the goal
 		if (m_currentNode == goal)
 			return reconstructPath(start, m_currentNode);
+
+		closedList.addItem(m_currentNode);
+		openList.remove(m_currentNode);
+		gScore = m_currentNode->gScore;
+
 		//gos through the openlists edges 
 		for (int n = 0; n < m_currentNode->edges.getLength(); n++) 
 		{
-			NodeGraph::Node* targetNode = m_currentNode->edges[n].target;
+			NodeGraph::Node* targetNode = m_currentNode->edges[0].target;
 			//if the currentnode is not walkable
 			if (m_currentNode->walkable == false)
 				continue;//do not move
 			//tries to see if the two list contains the target node
-			if (!closedList.contains(targetNode))
+			if (!closedList.contains(m_currentNode->edges[n].target))
 			{
-				//makes the gscore of the targetnode equal to the openlist index 0 gscorce + the edges index N of the openlist index 0 at  cost
 				targetNode->gScore = m_currentNode->edges[n].cost + m_currentNode->gScore;
-				targetNode->hScore = manHattan_Distance(m_currentNode, targetNode);
-				targetNode->fScore = targetNode->gScore + targetNode->hScore;
+				targetNode->hScore = manHattan_Distance(m_currentNode->edges[n].target, goal);
+				//makes the gscore of the targetnode equal to the openlist index 0 gscorce + the edges index N of the openlist index 0 at  cost
 			}
-			
 			else 
 				continue;
 			//Adds the node to the open list if it is not already in it
-			if (!openList.contains(targetNode))
+			if (!openList.contains(targetNode->edges[n].target) || m_currentNode->edges[n].target->gScore > targetNode->gScore)
 			{
 				//adds the target node to the openlist
-				openList.addItem(targetNode);
-				m_currentNode->edges[n].target->color = 0x00FFFF;//changes color
-				//gets the currentNode edges index Ns target gscore and set it to the targetNode gscore
+				openList.addItem(m_currentNode->edges[n].target);
+				m_currentNode->edges[n].target->color = 0x0FFFFF;//changes color
+				//gets the currentNode edges index Ns target score and set it to the targetNode score
+				m_currentNode->edges[n].target->gScore = targetNode->gScore;
 				m_currentNode->edges[n].target->hScore = targetNode->hScore;
+				m_currentNode->edges[n].target->fScore = targetNode->gScore + targetNode->hScore;
 				// gets the currentnodes edges targets previous and sets it to the currentNode
 				m_currentNode->edges[n].target->previous = m_currentNode; 
 			}
