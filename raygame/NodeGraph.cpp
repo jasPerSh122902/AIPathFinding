@@ -125,6 +125,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 				//gets the currentNode edges index Ns target score and set it to the targetNode score
 				m_currentNode->edges[n].target->gScore = targetNode->gScore;
 				m_currentNode->edges[n].target->hScore = targetNode->hScore;
+				//adds the g and h score of target node to the currentNnodes f score
 				m_currentNode->edges[n].target->fScore = targetNode->gScore + targetNode->hScore;
 				// gets the currentnodes edges targets previous and sets it to the currentNode
 				m_currentNode->edges[n].target->previous = m_currentNode; 

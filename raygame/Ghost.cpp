@@ -16,6 +16,7 @@ Ghost::Ghost(float x, float y, float maxSpeed, float maxForce, int color, Maze* 
 	m_maze = maze;
 	getTransform()->setScale({ Maze::TILE_SIZE,Maze::TILE_SIZE });
 
+	
 	m_pathfindComponent = new PathfindComponent(maze);
 	m_pathfindComponent->setColor(color);
 	addComponent(m_pathfindComponent);
@@ -25,6 +26,20 @@ Ghost::Ghost(float x, float y, float maxSpeed, float maxForce, int color, Maze* 
 Ghost::~Ghost()
 {
 	delete m_pathfindComponent;
+}
+
+void Ghost::start()
+{
+	Agent::start();
+	
+	m_seekComponent = addComponent<SeekComponent>();
+	m_seekComponent->setSteeringForce(100);
+	m_seekComponent->setTarget(m_target);
+	m_fleeComponent = addComponent<FleeComponent>();
+	m_fleeComponent->setSteeringForce(100);
+	m_fleeComponent->setTarget(m_target);
+
+	m_stateMachine = addComponent<StateMachineComponent>();
 }
 
 void Ghost::update(float deltaTime)
