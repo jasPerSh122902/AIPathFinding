@@ -27,6 +27,6 @@ private:
 	FleeComponent* m_fleeComponent;
 	float m_seekForce;
 	float m_fleeingForce;
-	float m_seekRange = 300;
+	float m_seekRange = 150;
 };
 

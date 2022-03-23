@@ -31,17 +31,17 @@ void StateMachineComponent::update(float deltaTime)
 	switch (m_currentState)
 	{
 	case SEEK:
-		m_seekComponent->setSteeringForce(m_seekComponent->getSteeringForce());
+		m_seekComponent->setSteeringForce(m_seekForce);
 		m_fleeComponent->setSteeringForce(0);
 
-		if (distanceFromTarget <= 250 && acos(MathLibrary::Vector2::dotProduct(coneFlee, getOwner()->getTransform()->getForward()) < 1))
+	if (distanceFromTarget < 100)
 			setCurrentState(FLEE);
 		break;
 	case FLEE:
 		m_seekComponent->setSteeringForce(0);
-		m_fleeComponent->setSteeringForce(m_fleeComponent->getSteeringForce());
+		m_fleeComponent->setSteeringForce(m_fleeingForce);
 
-		if (!distanceFromTarget <= 250 && acos(MathLibrary::Vector2::dotProduct(coneFlee, getOwner()->getTransform()->getForward()) < 1))
+		if (distanceFromTarget >= 150)
 			setCurrentState(SEEK);
 		break;
 	}

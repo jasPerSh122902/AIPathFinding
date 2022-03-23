@@ -85,7 +85,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	openList.addItem(start);
 	m_currentNode = start;
 	//has to check to see if the openlist is empty
-	while (openList.getLength() != 0)
+	while (openList.getLength() > 0)
 	{
 		//sorts the openlist by there f score
 		sortFScore(openList);
@@ -117,7 +117,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 			else 
 				continue;
 			//Adds the node to the open list if it is not already in it
-			if (!openList.contains(targetNode->edges[n].target) || m_currentNode->edges[n].target->gScore > targetNode->gScore)
+			if (!openList.contains(targetNode->edges[n].target) || m_currentNode->edges[n].target->gScore > gScore)
 			{
 				//adds the target node to the openlist
 				openList.addItem(m_currentNode->edges[n].target);
